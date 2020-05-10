@@ -4,11 +4,10 @@ from scrapy.utils.response import open_in_browser
 from ..items import ScrapingquotesItem
 
 class QuotesSpider(scrapy.Spider):
-    def __init__(self):
-        self.item = ScrapingquotesItem()
 
     name = "quotes"
     start_urls = ['http://quotes.toscrape.com/login']
+    item = ScrapingquotesItem()
 
     def parse(self, response):
         token = response.css('form input::attr(value)').extract_first()
@@ -24,10 +23,10 @@ class QuotesSpider(scrapy.Spider):
         all_divs = response.css('div.quote')
 
         for div in all_divs:
-            self.item['quote'] = div.css('span.text::text').extract()
-            self.item['author'] = div.css('.author::text').extract()
-            self.item['tags'] = div.css('.tag::text').extract()
-            yield self.item
+            QuotesSpider.item['quote'] = div.css('span.text::text').extract()
+            QuotesSpider.item['author'] = div.css('.author::text').extract()
+            QuotesSpider.item['tags'] = div.css('.tag::text').extract()
+            yield QuotesSpider.item
 
         next_page = response.css('li.next a::attr(href)').get()
         
