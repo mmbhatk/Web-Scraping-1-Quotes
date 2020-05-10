@@ -15,8 +15,8 @@ class QuotesSpider(scrapy.Spider):
         return FormRequest.from_response(response,
                                         formdata = {
                                             'csrf_token': token,
-                                            'username': 'abcd',
-                                            'password': 'pass'
+                                            'username': 'username',
+                                            'password': 'password'
                                         }, callback = self.scraping_process)
 
 
@@ -32,6 +32,6 @@ class QuotesSpider(scrapy.Spider):
         next_page = response.css('li.next a::attr(href)').get()
         
         if next_page is not None:
-            open_in_browser(response)
+            # open_in_browser(response)
             # Execute the parse function after following the path next_page
             yield response.follow(next_page, callback = self.scraping_process)
