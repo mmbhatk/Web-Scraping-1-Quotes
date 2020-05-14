@@ -30,7 +30,12 @@ class QuotesSpider(scrapy.Spider):
 
         next_page = response.css('li.next a::attr(href)').get()
         
-        if next_page is not None:
+        if next_page:
             # open_in_browser(response)
+
             # Execute the parse function after following the path next_page
-            yield response.follow(next_page, callback = self.scraping_process)
+            # yield response.follow(next_page, callback = self.scraping_process)
+
+            # Alternative way of pagination
+            next_page_url = response.urljoin(next_page)
+            yield scrapy.Request(url = next_page_url, callback = self.scraping_process)
